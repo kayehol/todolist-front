@@ -2,13 +2,14 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../auth/auth.service';
+import { HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-register',
   imports: [
     MatCardModule,
     MatFormFieldModule,
@@ -16,28 +17,27 @@ import { Router } from '@angular/router';
     MatButtonModule,
     ReactiveFormsModule
   ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  templateUrl: './register.component.html',
+  styleUrl: './register.component.scss'
 })
-export class LoginComponent {
-  public formLogin: FormGroup;
+export class RegisterComponent {
+  public formRegister: FormGroup;
   loading: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {
-    this.formLogin = new FormGroup({
+    this.formRegister = new FormGroup({
       login: new FormControl<string>('', Validators.required),
       password: new FormControl<string>('', Validators.required),
     });
   }
 
-  login() {
+  send() {
     this.loading = true;
-    const { login, password } = this.formLogin.value;
+    const payload = this.formRegister.value;
 
-    this.authService.login(login, password).subscribe({
+    this.authService.register(payload).subscribe({
       next: (res) => {
-        this.authService.setToken(res.token);
-        this.router.navigate(["/home"])
+        this.router.navigate(["/login"])
       },
       error: (err) => {
         console.log(err)
@@ -46,6 +46,5 @@ export class LoginComponent {
         this.loading = false;
       }
     })
-
   }
 }

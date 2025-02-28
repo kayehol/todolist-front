@@ -3,13 +3,13 @@
     <div>
       <mat-card-header>
         <mat-card-title class="title">
-          <h1>Lista de tarefas - Login</h1>
+          <h1>Lista de tarefas - Cadastro</h1>
         </mat-card-title>
       </mat-card-header>
     </div>
     <div>
       <mat-card-content>
-        <form [formGroup]="formLogin" class="loginForm">
+        <form [formGroup]="formRegister" class="loginForm">
           <mat-form-field>
             <mat-label>Login</mat-label>
             <input matInput formControlName="login">
@@ -23,8 +23,7 @@
     </div>
       <div class="button-list">
         <mat-card-actions>
-          <a mat-flat-button (click)="login()">Entrar</a>
-          <a mat-flat-button href="/register">Cadastrar</a>
+          <a mat-flat-button (click)="send()">Enviar</a>
         </mat-card-actions>
       </div>
   </mat-card>

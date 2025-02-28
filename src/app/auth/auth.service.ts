@@ -7,7 +7,7 @@ import { User } from "./user.interface";
   providedIn: 'root'
 })
 export class AuthService {
-  private url = "localhost:5765/api/auth";
+  private url = "http://localhost:5195/api/auth";
 
   constructor(private http: HttpClient) { }
 
@@ -34,6 +34,10 @@ export class AuthService {
     return localStorage.getItem('access_token');
   }
 
+  setToken(token: string) {
+    console.log({ token })
+    return localStorage.setItem('access_token', token);
+  }
   getAuthHeaders(): HttpHeaders {
     return new HttpHeaders().set('Authorization', `Bearer ${this.getToken()}`);
   }

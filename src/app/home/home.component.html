@@ -6,6 +6,9 @@
     <button mat-flat-button (click)="addTask()">Adicionar</button>
   </div>
   <mat-list class="list" role="list">
+    @if (loading) {
+      <mat-spinner class="spinner"></mat-spinner>
+    } @else {
     @for(task of tasks; track task) {
     <mat-list-item class="card" role="listitem">
       <mat-card class="card-in">
@@ -14,13 +17,17 @@
           <mat-card-subtitle>{{ task.description }}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-actions class="card-actions">
-          <button class="btn-icon" mat-stroked-button (click)="updateTask()">
+          <button [disabled]="task.done" class="btn-icon" mat-stroked-button (click)="updateTask()">
             @if (task.done) {
+            <div>
               <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="done_all"></mat-icon>
               Concluída
+            </div>
             } @else {
+            <div>
               <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="check"></mat-icon>
               Concluir
+            </div>
             }
           </button>
           <button class="btn-icon" mat-stroked-button (click)="updateTask()">
@@ -29,11 +36,12 @@
           </button>
           <button class="btn-icon" mat-stroked-button (click)="removeTask()">
             <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete"></mat-icon>
-            Remove
+            Remover
           </button>
         </mat-card-actions>
       </mat-card>
     </mat-list-item>
+    }
     }
   </mat-list>
 </div>

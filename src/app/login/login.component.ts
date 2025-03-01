@@ -45,7 +45,6 @@ export class LoginComponent {
       complete: () => {
         this.loading = false;
       }
-    })
-
+    });
   }
 }

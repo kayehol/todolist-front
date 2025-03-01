@@ -1,1 +1,39 @@
-<p>home works!</p>
+<div class="container">
+  <div class="title">
+    <h1>Lista de tarefas</h1>
+  </div>
+  <div class="addButton">
+    <button mat-flat-button (click)="addTask()">Adicionar</button>
+  </div>
+  <mat-list class="list" role="list">
+    @for(task of tasks; track task) {
+    <mat-list-item class="card" role="listitem">
+      <mat-card class="card-in">
+        <mat-card-header class="card-header">
+          <mat-card-title><strong>{{ task.title }}</strong></mat-card-title>
+          <mat-card-subtitle>{{ task.description }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-actions class="card-actions">
+          <button class="btn-icon" mat-stroked-button (click)="updateTask()">
+            @if (task.done) {
+              <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="done_all"></mat-icon>
+              Concluída
+            } @else {
+              <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="check"></mat-icon>
+              Concluir
+            }
+          </button>
+          <button class="btn-icon" mat-stroked-button (click)="updateTask()">
+            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="update"></mat-icon>
+            Atualizar
+          </button>
+          <button class="btn-icon" mat-stroked-button (click)="removeTask()">
+            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete"></mat-icon>
+            Remove
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </mat-list-item>
+    }
+  </mat-list>
+</div>

@@ -1,0 +1,36 @@
+.title {
+  text-align: center;
+}
+.container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.list {
+  width: auto;
+  height: 100%;
+  padding: 0 20em;
+}
+.card {
+  margin-top: 1em;
+  padding: 5em 0;
+}
+.card-header {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+}
+.card-in {
+  padding: 1em;
+}
+.card-actions {
+  display: flex;
+  justify-content: end;
+}
+.addButton {
+  align-self: center;
+}
+.btn-icon {
+  display: flex;
+  align-content: center;
+}

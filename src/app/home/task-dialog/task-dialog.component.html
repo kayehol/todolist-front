@@ -1,15 +1,20 @@
-<mat-card>
-  <mat-card-content>
-    <form [formGroup]="formTask" class="loginForm">
+<h2 mat-dialog-title>{{task ? 'Atualizar' : 'Adicionar'}} tarefa</h2>
+<mat-dialog-content>
+  <form [formGroup]="formTask" class="loginForm">
+    <div class="task-content">
       <mat-form-field>
         <mat-label>Título</mat-label>
         <input matInput formControlName="title">
       </mat-form-field>
       <mat-form-field>
         <mat-label>Descrição</mat-label>
-        <input matInput formControlName="description">
+        <textarea matInput formControlName="description"></textarea>
       </mat-form-field>
-      <mat-checkbox formControlName="done">Concluída</mat-checkbox>
-    </form>
-  </mat-card-content>
-</mat-card>
+    </div>
+    <mat-checkbox formControlName="done">Concluída</mat-checkbox>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-button [mat-dialog-close]="salvar()" cdkFocusInitial>Salvar</button>
+</mat-dialog-actions>

@@ -3,7 +3,12 @@
     <h1>Lista de tarefas</h1>
   </div>
   <div class="addButton">
-    <button mat-flat-button (click)="addTask()">Adicionar</button>
+    <button mat-flat-button (click)="openTaskModal()">
+      <div>
+        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="add"></mat-icon>
+        Adicionar
+      </div>
+    </button>
   </div>
   <mat-list class="list" role="list">
     @if (loading) {
@@ -15,22 +20,12 @@
         <mat-card-header class="card-header">
           <mat-card-title><strong>{{ task.title }}</strong></mat-card-title>
           <mat-card-subtitle>{{ task.description }}</mat-card-subtitle>
+          @if (task.done) {
+            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="check"></mat-icon>
+          }
         </mat-card-header>
         <mat-card-actions class="card-actions">
-          <button [disabled]="task.done" class="btn-icon" mat-stroked-button (click)="updateTask()">
-            @if (task.done) {
-            <div>
-              <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="done_all"></mat-icon>
-              Concluída
-            </div>
-            } @else {
-            <div>
-              <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="check"></mat-icon>
-              Concluir
-            </div>
-            }
-          </button>
-          <button class="btn-icon" mat-stroked-button (click)="updateTask()">
+          <button class="btn-icon" mat-stroked-button (click)="openTaskModal(task)">
             <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="update"></mat-icon>
             Atualizar
           </button>
@@ -42,6 +37,6 @@
       </mat-card>
     </mat-list-item>
     }
-    }
+  }
   </mat-list>
 </div>

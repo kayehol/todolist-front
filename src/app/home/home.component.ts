@@ -6,6 +6,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatDialog } from '@angular/material/dialog';
+import { TaskDialogComponent } from './task-dialog/task-dialog.component';
 
 @Component({
   selector: 'app-home',
@@ -23,7 +25,10 @@ export class HomeComponent {
   tasks: Task[] = [];
   loading: boolean = false;
 
-  constructor(private homeService: HomeService) {
+  constructor(
+    private homeService: HomeService,
+    private dialog: MatDialog
+  ) {
     this.loadTasks();
   }
 
@@ -39,11 +44,22 @@ export class HomeComponent {
 
   }
 
-  updateTask() {
-
+  updateTask(task: Task) {
+    console.log(task)
   }
 
   removeTask() {
+
+  }
+
+  openTaskModal(task?: Task) {
+    const dialogRef = this.dialog.open(TaskDialogComponent, {
+      data: task
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('dialog closed')
+    });
 
   }
 }

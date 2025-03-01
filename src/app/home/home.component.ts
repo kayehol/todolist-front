@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { TaskDialogComponent } from './task-dialog/task-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -27,17 +28,25 @@ export class HomeComponent {
 
   constructor(
     private homeService: HomeService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router
   ) {
     this.loadTasks();
   }
 
   loadTasks() {
     this.loading = true;
-    this.homeService.getTasks().subscribe(tasks => {
-      this.tasks = tasks;
-      this.loading = false;
-    })
+    this.homeService.getTasks().subscribe({
+      next: (tasks) => {
+        this.tasks = tasks;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.log(err)
+        this.router.navigate(["/login"])
+
+      }
+    });
   }
 
   addTask() {
@@ -45,10 +54,26 @@ export class HomeComponent {
   }
 
   updateTask(task: Task) {
-    console.log(task)
+
   }
 
-  removeTask() {
+  removeTask(task: Task) {
+    console.log({ task })
+    const id = task.id!;
+    this.loading = true;
+
+    this.homeService.removeTask(id).subscribe({
+      next: (res) => {
+        console.log(res)
+        this.loadTasks();
+      },
+      error: (err) => {
+        console.log(err)
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    })
 
   }
 
@@ -57,9 +82,8 @@ export class HomeComponent {
       data: task
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('dialog closed')
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadTasks()
     });
-
   }
 }

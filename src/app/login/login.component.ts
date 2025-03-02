@@ -51,6 +51,12 @@ export class LoginComponent {
       },
       error: (err) => {
         console.log(err)
+        this.snackbar.open('Credenciais inválidas', 'Ok', {
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+          duration: 3000
+        });
+        this.loading = false;
       },
       complete: () => {
         this.loading = false;

@@ -59,7 +59,6 @@ export class HomeComponent {
     this.authService.getUser().subscribe({
       next: (res: User) => {
         this.user = res;
-        console.log('user', this.user)
       },
       error: (err) => {
         console.log(err)

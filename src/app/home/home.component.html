@@ -20,39 +20,48 @@
     @if (loading) {
       <mat-spinner class="spinner"></mat-spinner>
     } @else {
-    @for(task of tasksPaginated.tasks; track task) {
-    <mat-list-item class="card" role="listitem">
-      <mat-card [class.card-done]="task.done" class="card-in">
-        <mat-card-header class="card-header">
-          <mat-card-title><strong>{{ task.title }}</strong></mat-card-title>
-          <mat-card-subtitle>{{ task.description }}</mat-card-subtitle>
-          @if (task.done) {
-            <mat-icon id="icon-done" aria-hidden="false" aria-label="Example home icon" fontIcon="check"></mat-icon>
-          }
-        </mat-card-header>
-        <mat-card-actions class="card-actions">
-          <button class="btn-icon" mat-flat-button (click)="openTaskModal(task)">
-            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="update"></mat-icon>
-            <div>Atualizar</div>
-          </button>
-          <button class="btn-icon" mat-flat-button (click)="removeTask(task)">
-            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete"></mat-icon>
-            <div>Remover</div>
-          </button>
-        </mat-card-actions>
-      </mat-card>
-    </mat-list-item>
+    @if (tasksPaginated.tasks.length == 0) {
+    <div class="empty">
+
+      Nenhuma tarefa para exibir
+    </div>
+    } @else {
+      @for(task of tasksPaginated.tasks; track task) {
+      <mat-list-item class="card" role="listitem">
+        <mat-card [class.card-done]="task.done" class="card-in">
+          <mat-card-header class="card-header">
+            <mat-card-title><strong>{{ task.title }}</strong></mat-card-title>
+            <mat-card-subtitle>{{ task.description }}</mat-card-subtitle>
+            @if (task.done) {
+              <mat-icon id="icon-done" aria-hidden="false" aria-label="Example home icon" fontIcon="check"></mat-icon>
+            }
+          </mat-card-header>
+          <mat-card-actions class="card-actions">
+            <button class="btn-icon" mat-flat-button (click)="openTaskModal(task)">
+              <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="update"></mat-icon>
+              <div>Atualizar</div>
+            </button>
+            <button class="btn-icon" mat-flat-button (click)="removeTask(task)">
+              <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete"></mat-icon>
+              <div>Remover</div>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-list-item>
+      }
     }
   }
-  <mat-paginator
-    #paginator
-    class="paginator"
-    [length]="total"
-    [pageSize]="pageSize"
-    [pageIndex]="pageIndex"
-    [pageSizeOptions]="[5, 10, 20]"
-    (page)="onPageChanged($event)"
-  >
-  </mat-paginator>
+  @if (tasksPaginated.tasks.length > 0) {
+    <mat-paginator
+      #paginator
+      class="paginator"
+      [length]="total"
+      [pageSize]="pageSize"
+      [pageIndex]="pageIndex"
+      [pageSizeOptions]="[5, 10, 20]"
+      (page)="onPageChanged($event)"
+    >
+    </mat-paginator>
+  }
   </mat-list>
 </div>

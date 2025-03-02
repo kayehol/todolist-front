@@ -1,13 +1,15 @@
 .title {
   text-align: center;
+  margin-top: 5em;
 }
 .container {
   display: flex;
   justify-content: center;
   flex-direction: column;
   background-color: #2980b9;
-  height: 100%;
+  min-height: 100%;
 }
+
 .list {
   width: auto;
   height: 100%;
@@ -63,6 +65,14 @@
 .header-login > p {
   margin-right: 1em;
 }
+.empty {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 10em 0;
+}
 #icon-done {
   margin-left: 1em;
 }
+

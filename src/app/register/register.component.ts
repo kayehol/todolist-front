@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -7,6 +7,8 @@ import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../auth/auth.service';
 import { HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-register',
@@ -15,7 +17,9 @@ import { Router } from '@angular/router';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
@@ -23,24 +27,40 @@ import { Router } from '@angular/router';
 export class RegisterComponent {
   public formRegister: FormGroup;
   loading: boolean = false;
+  private snackbar = inject(MatSnackBar);
 
   constructor(private authService: AuthService, private router: Router) {
     this.formRegister = new FormGroup({
       login: new FormControl<string>('', Validators.required),
       password: new FormControl<string>('', Validators.required),
+      confirmPassword: new FormControl<string>('', Validators.required),
+    });
+  }
+
+  openSnack(message: string) {
+    this.snackbar.open(message, 'Ok', {
+      horizontalPosition: 'end',
+      verticalPosition: 'top',
+      duration: 3000
     });
   }
 
   send() {
     this.loading = true;
-    const payload = this.formRegister.value;
+    const { login, password, confirmPassword } = this.formRegister.value;
+    const payload = { login, password };
 
+    if (password !== confirmPassword) {
+      this.loading = false;
+      return;
+    }
     this.authService.register(payload).subscribe({
       next: (res) => {
+        this.openSnack(res.message);
         this.router.navigate(["/login"])
       },
       error: (err) => {
-        console.log(err)
+        this.openSnack(err.message);
       },
       complete: () => {
         this.loading = false;

@@ -42,4 +42,8 @@ export class AuthService {
     return new HttpHeaders().set('Authorization', `Bearer ${this.getToken()}`);
   }
 
+  getUser(): Observable<User> {
+    return this.http.get<User>(`${this.url}/user`);
+  }
+
 }

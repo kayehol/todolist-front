@@ -11,6 +11,7 @@ import { HomeService } from '../home.service';
 import { Router } from '@angular/router';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { User } from '../../auth/user.interface';
 
 @Component({
   selector: 'app-task-dialog',
@@ -32,7 +33,9 @@ export class TaskDialogComponent {
   formTask: FormGroup;
   loading: boolean = false;
   readonly dialogRef = inject(MatDialogRef<TaskDialogComponent>);
-  readonly task = inject<Task>(MAT_DIALOG_DATA);
+  readonly data = inject<any>(MAT_DIALOG_DATA);
+  task: Task = this.data.task;
+  user: User = this.data.user;
   private snackbar = inject(MatSnackBar);
 
   constructor(
@@ -67,7 +70,7 @@ export class TaskDialogComponent {
             verticalPosition: 'top',
             duration: 3000
           });
-          this.cancel();
+          this.cancel(true);
         },
         error: (err) => {
           console.log(err)
@@ -77,14 +80,18 @@ export class TaskDialogComponent {
         },
       })
     } else {
-      this.homeService.createTask(payload).subscribe({
+      const payloadUpdated = {
+        ...payload,
+        userId: this.user.id
+      }
+      this.homeService.createTask(payloadUpdated).subscribe({
         next: () => {
           this.snackbar.open('Tarefa criada', 'Ok', {
             horizontalPosition: 'end',
             verticalPosition: 'top',
             duration: 3000
           });
-          this.cancel();
+          this.cancel(true);
         },
         error: () => {
 
@@ -96,7 +103,10 @@ export class TaskDialogComponent {
     }
   }
 
-  cancel() {
-    this.dialogRef.close();
+  cancel(load: boolean) {
+    if (load)
+      this.dialogRef.close('load');
+    else
+      this.dialogRef.close();
   }
 }

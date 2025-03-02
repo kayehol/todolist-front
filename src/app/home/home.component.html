@@ -1,15 +1,18 @@
 <div class="container">
   <div class="btn-logout">
-    <button mat-stroked-button (click)="logout()">Logout</button>
+    <div class="header-login">
+      <p><strong>{{ user?.login }}</strong></p>
+      <button mat-flat-button (click)="logout()">Logout</button>
+    </div>
   </div>
   <div class="title">
     <h1>Lista de tarefas</h1>
   </div>
   <div class="addButton">
     <button mat-flat-button (click)="openTaskModal()">
-      <div>
+      <div class="btn-icon">
         <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="add"></mat-icon>
-        Adicionar
+        <div>Adicionar</div>
       </div>
     </button>
   </div>
@@ -24,17 +27,17 @@
           <mat-card-title><strong>{{ task.title }}</strong></mat-card-title>
           <mat-card-subtitle>{{ task.description }}</mat-card-subtitle>
           @if (task.done) {
-            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="check"></mat-icon>
+            <mat-icon id="icon-done" aria-hidden="false" aria-label="Example home icon" fontIcon="check"></mat-icon>
           }
         </mat-card-header>
         <mat-card-actions class="card-actions">
-          <button class="btn-icon" mat-stroked-button (click)="openTaskModal(task)">
+          <button class="btn-icon" mat-flat-button (click)="openTaskModal(task)">
             <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="update"></mat-icon>
-            Atualizar
+            <div>Atualizar</div>
           </button>
-          <button class="btn-icon" mat-stroked-button (click)="removeTask(task)">
+          <button class="btn-icon" mat-flat-button (click)="removeTask(task)">
             <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete"></mat-icon>
-            Remover
+            <div>Remover</div>
           </button>
         </mat-card-actions>
       </mat-card>
@@ -43,6 +46,7 @@
   }
   <mat-paginator
     #paginator
+    class="paginator"
     [length]="total"
     [pageSize]="pageSize"
     [pageIndex]="pageIndex"

@@ -4,3 +4,11 @@ export interface Task {
   description: string;
   done: boolean;
 }
+
+export interface TasksPaginated {
+  tasks: Task[];
+  totalCount: number;
+  pageNumber: number;
+  pageSize: number;
+  totalPages: number;
+}

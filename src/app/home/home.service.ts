@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { Task } from "./task.interface";
+import { Task, TasksPaginated } from "./task.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,10 @@ export class HomeService {
 
   getTasks(): Observable<Task[]> {
     return this.http.get<Task[]>(`${this.url}/tasks`);
+  }
+
+  getPaginated(pageIndex: number, pageSize: number): Observable<TasksPaginated> {
+    return this.http.get<TasksPaginated>(`${this.url}/tasks/paginated?page=${pageIndex + 1}&pageSize=${pageSize}`);
   }
 
   createTask(task: Task): Observable<any> {

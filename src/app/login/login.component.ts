@@ -32,12 +32,24 @@ export class LoginComponent {
     this.formLogin = new FormGroup({
       login: new FormControl<string>('', Validators.required),
       password: new FormControl<string>('', Validators.required),
+      confirmPassword: new FormControl<string>('', Validators.required),
     });
   }
 
   login() {
     this.loading = true;
-    const { login, password } = this.formLogin.value;
+    const { login, password, confirmPassword } = this.formLogin.value;
+    console.log(login, password, confirmPassword)
+
+    if (password !== confirmPassword) {
+      this.snackbar.open('Credenciais inválidas', 'Ok', {
+        horizontalPosition: 'end',
+        verticalPosition: 'top',
+        duration: 3000
+      });
+      this.loading = false;
+      return;
+    }
 
     this.authService.login(login, password).subscribe({
       next: (res) => {

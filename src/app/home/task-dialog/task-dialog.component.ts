@@ -67,7 +67,7 @@ export class TaskDialogComponent {
             verticalPosition: 'top',
             duration: 3000
           });
-          this.cancel();
+          this.cancel(true);
         },
         error: (err) => {
           console.log(err)
@@ -84,7 +84,7 @@ export class TaskDialogComponent {
             verticalPosition: 'top',
             duration: 3000
           });
-          this.cancel();
+          this.cancel(true);
         },
         error: () => {
 
@@ -96,7 +96,10 @@ export class TaskDialogComponent {
     }
   }
 
-  cancel() {
-    this.dialogRef.close();
+  cancel(load: boolean) {
+    if (load)
+      this.dialogRef.close('load');
+    else
+      this.dialogRef.close();
   }
 }

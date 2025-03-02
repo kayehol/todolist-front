@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -17,12 +18,14 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
     MatButtonModule,
     ReactiveFormsModule,
     MatProgressSpinner,
+    MatSnackBarModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
   public formLogin: FormGroup;
+  private snackbar = inject(MatSnackBar);
   loading: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {
@@ -38,6 +41,11 @@ export class LoginComponent {
 
     this.authService.login(login, password).subscribe({
       next: (res) => {
+        this.snackbar.open('Sucesso', 'Ok', {
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+          duration: 3000
+        });
         this.authService.setToken(res.token);
         this.router.navigate(["/home"])
       },

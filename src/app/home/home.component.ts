@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { HomeService } from './home.service';
 import { Task, TasksPaginated } from './task.interface';
@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-home',
@@ -23,11 +24,13 @@ import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/p
     MatProgressSpinner,
     MatTableModule,
     MatPaginatorModule,
+    MatSnackBarModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
+  private snackbar = inject(MatSnackBar);
   tasks: Task[] = [];
   tasksPaginated!: TasksPaginated;
   currentPageTasks: Task[] = [];
@@ -68,21 +71,28 @@ export class HomeComponent {
   }
 
   removeTask(task: Task) {
-    const id = task.id!;
-    this.loading = true;
+    // todo: criar componente de confirmação
+    if (confirm("Tem certeza?")) {
+      const id = task.id!;
+      this.loading = true;
 
-    this.homeService.removeTask(id).subscribe({
-      next: (res) => {
-        this.loadTasks();
-      },
-      error: (err) => {
-        console.log(err)
-      },
-      complete: () => {
-        this.loading = false;
-      },
-    })
-
+      this.homeService.removeTask(id).subscribe({
+        next: () => {
+          this.snackbar.open('Tarefa removida', 'Ok', {
+            horizontalPosition: 'end',
+            verticalPosition: 'top',
+            duration: 3000
+          });
+          this.loadTasks();
+        },
+        error: (err) => {
+          console.log(err)
+        },
+        complete: () => {
+          this.loading = false;
+        },
+      })
+    }
   }
 
   openTaskModal(task?: Task) {
@@ -90,8 +100,9 @@ export class HomeComponent {
       data: task
     });
 
-    dialogRef.afterClosed().subscribe(() => {
-      this.loadTasks(0, 10)
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result === "load")
+        this.loadTasks()
     });
   }
 
@@ -112,5 +123,4 @@ export class HomeComponent {
     this.updatePageData();
     this.loadTasks(this.pageIndex, this.pageSize);
   }
-
 }

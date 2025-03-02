@@ -23,6 +23,9 @@
 .card-in {
   padding: 1em;
 }
+.card-done {
+  background-color: green;
+}
 .card-actions {
   display: flex;
   justify-content: end;
@@ -33,6 +36,13 @@
 .btn-icon {
   display: flex;
   align-content: center;
+}
+
+.btn-logout {
+  width: auto;
+  display: flex;
+  justify-content: end;
+  padding: 1em;
 }
 .mat-spinner {
   display: flex;

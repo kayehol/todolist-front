@@ -10,6 +10,7 @@ import { Task } from '../task.interface';
 import { HomeService } from '../home.service';
 import { Router } from '@angular/router';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-task-dialog',
@@ -22,6 +23,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
     MatDialogModule,
     MatButtonModule,
     MatProgressSpinner,
+    MatSnackBarModule,
   ],
   templateUrl: './task-dialog.component.html',
   styleUrl: './task-dialog.component.scss'
@@ -31,10 +33,10 @@ export class TaskDialogComponent {
   loading: boolean = false;
   readonly dialogRef = inject(MatDialogRef<TaskDialogComponent>);
   readonly task = inject<Task>(MAT_DIALOG_DATA);
+  private snackbar = inject(MatSnackBar);
 
   constructor(
     private homeService: HomeService,
-    private router: Router
   ) {
     this.formTask = new FormGroup({
       title: new FormControl<string>('', Validators.required),
@@ -60,6 +62,11 @@ export class TaskDialogComponent {
 
       this.homeService.updateTask(updated).subscribe({
         next: () => {
+          this.snackbar.open('Tarefa atualizada', 'Ok', {
+            horizontalPosition: 'end',
+            verticalPosition: 'top',
+            duration: 3000
+          });
           this.cancel();
         },
         error: (err) => {
@@ -72,6 +79,11 @@ export class TaskDialogComponent {
     } else {
       this.homeService.createTask(payload).subscribe({
         next: () => {
+          this.snackbar.open('Tarefa criada', 'Ok', {
+            horizontalPosition: 'end',
+            verticalPosition: 'top',
+            duration: 3000
+          });
           this.cancel();
         },
         error: () => {

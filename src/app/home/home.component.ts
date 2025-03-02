@@ -9,6 +9,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { TaskDialogComponent } from './task-dialog/task-dialog.component';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -28,8 +29,9 @@ export class HomeComponent {
 
   constructor(
     private homeService: HomeService,
+    private authService: AuthService,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
   ) {
     this.loadTasks();
   }
@@ -86,4 +88,10 @@ export class HomeComponent {
       this.loadTasks()
     });
   }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(["/login"]);
+  }
+
 }

@@ -13,6 +13,7 @@ import { AuthService } from '../auth/auth.service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { User } from '../auth/user.interface';
 
 @Component({
   selector: 'app-home',
@@ -32,6 +33,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 export class HomeComponent {
   private snackbar = inject(MatSnackBar);
   tasks: Task[] = [];
+  user: User | undefined;
   tasksPaginated!: TasksPaginated;
   currentPageTasks: Task[] = [];
   loading: boolean = false;
@@ -49,7 +51,20 @@ export class HomeComponent {
     private dialog: MatDialog,
     private router: Router,
   ) {
+    this.getUser();
     this.loadTasks();
+  }
+
+  getUser() {
+    this.authService.getUser().subscribe({
+      next: (res: User) => {
+        this.user = res;
+        console.log('user', this.user)
+      },
+      error: (err) => {
+        console.log(err)
+      },
+    });
   }
 
   loadTasks(pageIndex: number = 0, pageSize: number = this.pageSize) {
@@ -97,7 +112,10 @@ export class HomeComponent {
 
   openTaskModal(task?: Task) {
     const dialogRef = this.dialog.open(TaskDialogComponent, {
-      data: task
+      data: {
+        task: task,
+        user: this.user
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {

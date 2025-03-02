@@ -55,6 +55,13 @@
 .paginator {
   margin-top: 1em;
 }
+.header-login {
+  display: flex;
+  flex-direction: row;
+}
+.header-login > p {
+  margin-right: 1em;
+}
 #icon-done {
   margin-left: 1em;
 }

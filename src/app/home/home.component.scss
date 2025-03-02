@@ -34,6 +34,13 @@
   display: flex;
   align-content: center;
 }
+
+.btn-logout {
+  width: auto;
+  display: flex;
+  justify-content: end;
+  padding: 1em;
+}
 .mat-spinner {
   display: flex;
   justify-content: center;

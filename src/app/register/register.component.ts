@@ -52,6 +52,7 @@ export class RegisterComponent {
 
     if (password !== confirmPassword) {
       this.loading = false;
+      this.openSnack('Credenciais inválidas');
       return;
     }
     this.authService.register(payload).subscribe({

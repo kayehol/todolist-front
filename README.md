@@ -6,4 +6,3 @@ Aplicação para gerenciar tarefas
 - Clone o repositório
 - Instale as dependências `npm install`
 - Execute o servidor de desenvolvimento `ng serve`
-
